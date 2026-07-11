@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Score Prediction Platform</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Student score predictor</p>
+      <h1>Predict math scores from student profile data.</h1>
+      <p class="lede">Enter a student profile below and get a quick prediction from the trained model.</p>
+    </section>
+
+    <form class="card" method="post" action="/predict">
+      <div class="grid">
+        <label>Gender
+          <select name="gender" required>
+            {% for option in gender_options %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>Race/Ethnicity
+          <select name="race_ethnicity" required>
+            {% for option in race_ethnicity_options %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>Parental level of education
+          <select name="parental_level_of_education" required>
+            {% for option in parental_level_of_education_options %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>Lunch
+          <select name="lunch" required>
+            {% for option in lunch_options %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>Test preparation course
+          <select name="test_preparation_course" required>
+            {% for option in test_preparation_options %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>Reading score <input name="reading_score" type="number" min="0" max="100" step="1" required></label>
+        <label>Writing score <input name="writing_score" type="number" min="0" max="100" step="1" required></label>
+      </div>
+      <button type="submit">Predict score</button>
+    </form>
+  </main>
+</body>
+</html>

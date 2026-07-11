@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prediction Result</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="card result-card">
+      <p class="eyebrow">Prediction result</p>
+      <h1>{{ prediction_message }}</h1>
+      <p class="meta">Model version: {{ model_version }}</p>
+      <a href="/">Make another prediction</a>
+      <pre class="echo">{{ sanitized_values | tojson(indent=2) }}</pre>
+    </section>
+  </main>
+</body>
+</html>
