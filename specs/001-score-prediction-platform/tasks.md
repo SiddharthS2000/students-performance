@@ -42,18 +42,21 @@
 
 ## Phase 3: User Story 1 - Train the score model (Priority: P1) 🎯 MVP
 
-**Goal**: Prepare the dataset, train the score prediction model, and persist a reusable artifact.
+**Goal**: Prepare the dataset, train the score prediction model through both UI and API paths, and persist a reusable artifact.
 
-**Independent Test**: Running the training workflow loads the raw CSV, splits the data, trains the model, and saves a versioned artifact without manual code edits.
+**Independent Test**: Running the training workflow from the UI and from the API each loads the raw CSV, splits the data, trains the model, and saves a versioned artifact without manual code edits.
 
 ### Tests for User Story 1
 
 - [X] T009 [P] [US1] Add unit tests for CSV ingestion and preprocessing in tests/unit/test_data_ingestion.py and tests/unit/test_preprocessing.py
 - [X] T010 [P] [US1] Add integration coverage for the training workflow and saved artifact in tests/integration/test_model_training.py
+- [ ] T010A [P] [US1] Add integration coverage for training through the UI and API entry points in tests/integration/test_model_training.py
 
 ### Implementation for User Story 1
 
 - [X] T011 [US1] Implement the training pipeline, train/test split, fixed seed handling, and model artifact persistence in src/model_training.py
+- [ ] T011A [US1] Implement a reusable training endpoint and UI-triggered training flow in backend/routes/predict.py or backend/routes/pages.py and backend/main.py
+- [ ] T011B [US1] Add a simple training visualization or EDA view in backend/templates/ and backend/routes/pages.py when exploratory charts are available
 - [X] T012 [US1] Add the training entrypoint and usage documentation in README.md for running python -m src.model_training and locating the saved artifact
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently

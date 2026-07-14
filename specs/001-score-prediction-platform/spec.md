@@ -12,7 +12,7 @@
 
 ### User Story 1 - Train the score model (Priority: P1)
 
-As a user working on the project, I want the system to prepare the dataset, train a predictive model, and save the trained result so that the project can produce score predictions from a repeatable workflow.
+As a user working on the project, I want the system to prepare the dataset, train a predictive model, and save the trained result so that the project can produce score predictions from a repeatable workflow. Model training should be done via UI and APIs. Perform exploratory data analysis and data visualization on UI if possible.
 
 **Why this priority**: Training is the foundation of the feature set; without a reliable training path, prediction and evaluation cannot be trusted.
 

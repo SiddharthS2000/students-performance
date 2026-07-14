@@ -9,6 +9,8 @@ from src.config import (
     MODEL_METADATA_PATH,
     MODEL_PATH,
     RANDOM_SEED,
+    TARGET_COLUMN,
+    TRAINING_PLOT_PATH,
     TRAINING_SUMMARY_PATH,
 )
 from src.data_ingestion import load_dataset, prepare_features_and_target
@@ -24,6 +26,11 @@ def train_model(
 ) -> dict:
     import joblib
     import pandas as pd
+    import matplotlib
+
+    matplotlib.use("Agg")
+
+    import matplotlib.pyplot as plt
     from sklearn.ensemble import RandomForestRegressor
     from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
     from sklearn.model_selection import train_test_split
@@ -42,11 +49,14 @@ def train_model(
     )
     pipeline.fit(x_train, y_train)
     predictions = pipeline.predict(x_test)
+    _save_training_eda_plot(dataframe)
 
     ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
     joblib.dump(pipeline, model_path)
 
     metrics = {
+        "dataset_rows": int(len(dataframe)),
+        "dataset_columns": int(dataframe.shape[1]),
         "train_rows": int(len(x_train)),
         "test_rows": int(len(x_test)),
         "model_path": str(model_path),
@@ -55,6 +65,10 @@ def train_model(
         "rmse": float(_root_mean_squared_error(y_test, predictions)),
         "r2": float(r2_score(y_test, predictions)),
         "random_seed": RANDOM_SEED,
+        "target_mean": float(dataframe[TARGET_COLUMN].mean()),
+        "target_min": float(dataframe[TARGET_COLUMN].min()),
+        "target_max": float(dataframe[TARGET_COLUMN].max()),
+        "training_plot_path": str(TRAINING_PLOT_PATH),
     }
     with TRAINING_SUMMARY_PATH.open("w", encoding="utf-8") as summary_file:
         json.dump(metrics, summary_file, indent=2)
@@ -72,6 +86,24 @@ def train_model(
 
     logger.info("Model trained and saved to %s", model_path)
     return metrics
+
+
+def _save_training_eda_plot(dataframe) -> None:
+    import matplotlib
+
+    matplotlib.use("Agg")
+
+    import matplotlib.pyplot as plt
+
+    TRAINING_PLOT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    plt.figure(figsize=(8, 5))
+    plt.hist(dataframe[TARGET_COLUMN], bins=15, color="#0d6b63", alpha=0.82)
+    plt.xlabel("Math score")
+    plt.ylabel("Count")
+    plt.title("Training Target Distribution")
+    plt.tight_layout()
+    plt.savefig(TRAINING_PLOT_PATH)
+    plt.close()
 
 
 def main() -> None:

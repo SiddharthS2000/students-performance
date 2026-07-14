@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Training Result</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <main class="shell">
+    <section class="card result-card">
+        <p class="eyebrow">Training result</p>
+        <h5>{{ training_message }}</h5>
+        <p class="eyebrow">Training Summary</p>
+        <pre class="echo">{{ training_summary | tojson(indent=2) }}</pre>
+        <p class="eyebrow">Plots</p>
+        <img src="/plots/{{ training_plot_url }}">
+        <img src="/plots/{{ actual_vs_predicted_plot_url}}">
+        <img src="/plots/{{ residual_plot_path }}">
+    </section>
+    </main>
+</body>
+</html>

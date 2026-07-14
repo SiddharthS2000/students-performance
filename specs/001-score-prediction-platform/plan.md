@@ -6,7 +6,7 @@
 
 ## Summary
 
-Build an end-to-end student score prediction web application that preserves the notebook-derived scikit-learn workflow, exposes a FastAPI prediction API, serves a simple HTML/CSS user interface, sanitizes echoed user input, and ships in a Docker container.
+Build an end-to-end student score prediction web application that preserves the notebook-derived scikit-learn workflow, exposes FastAPI APIs for training and prediction, serves a simple HTML/CSS user interface for training, visualization, and prediction, sanitizes echoed user input, and ships in a Docker container.
 
 ## Technical Context
 
@@ -36,7 +36,7 @@ Build an end-to-end student score prediction web application that preserves the 
 - Reproducible ML Workflow: pass. Training will use fixed seeds, deterministic preprocessing, and saved artifacts.
 - Logging and Exception Discipline: pass. The implementation will use `src/logger.py` and `src/exception.py` for diagnostics and domain errors.
 - Metric-Driven Evaluation: pass. Evaluation will report measurable regression metrics and visual summaries.
-- Simple UI and Deployment Readiness: pass. The UI will have one primary prediction form and the app will be containerized.
+- Simple UI and Deployment Readiness: pass. The UI will provide training, visualization, and prediction entry points, and the app will be containerized.
 
 ## Project Structure
 

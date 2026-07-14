@@ -10,7 +10,7 @@
   <main class="shell">
     <section class="card result-card">
       <p class="eyebrow">Prediction result</p>
-      <h1>{{ prediction_message }}</h1>
+      <h5>{{ prediction_message }}</h5>
       <p class="meta">Model version: {{ model_version }}</p>
       <a href="/">Make another prediction</a>
       <pre class="echo">{{ sanitized_values | tojson(indent=2) }}</pre>

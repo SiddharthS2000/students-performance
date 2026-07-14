@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from src.config import (
+    ACTUAL_VS_PREDICTED_PLOT_PATH,
     ARTIFACTS_DIR,
     DATASET_PATH,
     EVALUATION_SUMMARY_PATH,
@@ -11,6 +12,7 @@ from src.config import (
     MODEL_PATH,
     PLOTS_DIR,
     RANDOM_SEED,
+    RESIDUAL_PLOT_PATH,
 )
 from src.data_ingestion import load_dataset, prepare_features_and_target
 from src.exception import DataValidationError, ModelArtifactError
@@ -63,10 +65,8 @@ def evaluate_model(
         json.dump(
             {
                 **metrics,
-                "residual_plot_path": str(PLOTS_DIR / "residuals.png"),
-                "actual_vs_predicted_plot_path": str(
-                    PLOTS_DIR / "actual_vs_predicted.png"
-                ),
+                "residual_plot_path": str(RESIDUAL_PLOT_PATH),
+                "actual_vs_predicted_plot_path": str(ACTUAL_VS_PREDICTED_PLOT_PATH),
             },
             summary_file,
             indent=2,
@@ -87,7 +87,17 @@ def _save_plots(y_test, predictions) -> None:
     plt.ylabel("Residual")
     plt.title("Residual Analysis")
     plt.tight_layout()
-    plt.savefig(PLOTS_DIR / "residuals.png")
+    plt.savefig(RESIDUAL_PLOT_PATH)
+    plt.close()
+
+    plt.figure(figsize=(8, 5))
+    plt.scatter(y_test, predictions, alpha=0.7)
+    plt.axline((0, 0), slope=1, linestyle="--")
+    plt.xlabel("Actual math score")
+    plt.ylabel("Predicted math score")
+    plt.title("Actual vs Predicted")
+    plt.tight_layout()
+    plt.savefig(ACTUAL_VS_PREDICTED_PLOT_PATH)
     plt.close()
 
 
@@ -102,15 +112,6 @@ def _root_mean_squared_error(y_true, y_pred) -> float:
         return float(mean_squared_error(y_true, y_pred, squared=False))
     except TypeError:
         return float(mean_squared_error(y_true, y_pred, squared=False))
-
-    plt.figure(figsize=(8, 5))
-    plt.scatter(y_test, predictions, alpha=0.7)
-    plt.xlabel("Actual math score")
-    plt.ylabel("Predicted math score")
-    plt.title("Actual vs Predicted")
-    plt.tight_layout()
-    plt.savefig(PLOTS_DIR / "actual_vs_predicted.png")
-    plt.close()
 
 
 def main() -> None:
