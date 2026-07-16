@@ -6,6 +6,13 @@ name: Docker
 # documentation.
 
 on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Provide a custom Docker image tag (e.g., v1.0.0, latest)'
+        required: false
+        type: string
+        default: 'latest'
   push:
     branches: [ "main" ]
     # Publish semver tags as releases.
@@ -34,6 +41,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set FINAL_TAG
+        run: |
+          if [ -n "${{ github.event.inputs.image_tag }}" ]; then
+            echo "FINAL_TAG=${{ github.event.inputs.image_tag }}" >> $GITHUB_ENV
+          else
+            echo "FINAL_TAG=latest" >> $GITHUB_ENV
+          fi
+
+      - name: Normalize repo name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
@@ -75,7 +93,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.FINAL_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
