@@ -32,9 +32,8 @@ MANIFEST
 *.manifest
 *.spec
 
-# IDE and VCS
+# IDE
 .vscode
-.github
 
 # Installer logs
 pip-log.txt
